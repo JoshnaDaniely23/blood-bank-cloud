@@ -126,7 +126,13 @@ def search():
         data = [d for d in all_data if d['blood'] == blood]
     return render_template_string(search_page, data=data)
 
-# Run for Cloud (Render)
+# ✅ NEW ROUTE TO VIEW ALL DATA
+@app.route('/all')
+def show_all():
+    data = load_data()
+    return data
+
+# Run for cloud
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
