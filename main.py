@@ -6,16 +6,19 @@ app = Flask(__name__)
 
 DATA_FILE = "data.json"
 
+# Load data
 def load_data():
     if not os.path.exists(DATA_FILE):
         return []
     with open(DATA_FILE, "r") as f:
         return json.load(f)
 
+# Save data
 def save_data(data):
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+# Home Page
 home_page = '''
 <!DOCTYPE html>
 <html>
@@ -24,7 +27,15 @@ home_page = '''
 <style>
 body { font-family: Arial; text-align: center; background: #e6f2ff; }
 .box { margin-top: 100px; }
-a { padding: 12px 25px; background: #007BFF; color: white; text-decoration: none; margin: 10px; display: inline-block; border-radius: 5px;}
+a {
+ padding: 12px 25px;
+ background: #007BFF;
+ color: white;
+ text-decoration: none;
+ margin: 10px;
+ display: inline-block;
+ border-radius: 5px;
+}
 </style>
 </head>
 <body>
@@ -37,6 +48,7 @@ a { padding: 12px 25px; background: #007BFF; color: white; text-decoration: none
 </html>
 '''
 
+# Register Page
 register_page = '''
 <!DOCTYPE html>
 <html>
@@ -56,6 +68,7 @@ register_page = '''
 </html>
 '''
 
+# Search Page
 search_page = '''
 <!DOCTYPE html>
 <html>
@@ -82,6 +95,7 @@ search_page = '''
 </html>
 '''
 
+# Routes
 @app.route('/')
 def home():
     return render_template_string(home_page)
@@ -112,5 +126,7 @@ def search():
         data = [d for d in all_data if d['blood'] == blood]
     return render_template_string(search_page, data=data)
 
+# Run for Cloud (Render)
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
